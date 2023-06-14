@@ -5,6 +5,7 @@
       <configuration>
         <fileset id="fileset" name="Application Contest" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/application-contest.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/application-context.xml</file>
         </fileset>
       </configuration>
     </facet>

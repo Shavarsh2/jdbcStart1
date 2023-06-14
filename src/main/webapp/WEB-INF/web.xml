@@ -3,4 +3,90 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <servlet>
+        <servlet-name>HelloServlet</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.HelloServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.WelcomeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>creatUser</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.CreatServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatePas</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.UpdatePassServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changePas</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.ChangePassServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SessionServlet</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.SessionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SetCookiesServlet</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.SetCookiesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetCookiesServlet</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.GetCookiesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCookiesServlet</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.DeleteCookiesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditServlet</servlet-name>
+        <servlet-class>am.hitech.jdbc.controller.EditServlet</servlet-class>
+    </servlet>
+    
+<servlet-mapping>
+    <servlet-name>EditServlet</servlet-name>
+    <url-pattern>/edituser</url-pattern>
+</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCookiesServlet</servlet-name>
+        <url-pattern>/delete-cookies</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCookiesServlet</servlet-name>
+        <url-pattern>/get-cookies</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetCookiesServlet</servlet-name>
+        <url-pattern>/set-cookies</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SessionServlet</servlet-name>
+        <url-pattern>/sum</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changePas</servlet-name>
+        <url-pattern>/changePass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatePas</servlet-name>
+        <url-pattern>/updatePass</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>HelloServlet</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <url-pattern>/welcome</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>creatUser</servlet-name>
+        <url-pattern>/creatUser</url-pattern>
+    </servlet-mapping>
+
+
 </web-app>

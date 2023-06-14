@@ -11,7 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdressRepo {
-    Connection connection = DataSourse.getConnection();
+    DataSourse dataSourse;
+    Connection connection;
+    public void setDataSourse(DataSourse dataSourse){
+        this.dataSourse = dataSourse;
+        connection = dataSourse.getConnection();
+    }
+
 
     public int creatAdress(Adress adress){
         String query = "insert into `adress` values(0,?,?,?,?,?)";

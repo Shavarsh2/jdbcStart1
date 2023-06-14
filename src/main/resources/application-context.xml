@@ -1,6 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/jpa https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <context:component-scan base-package="am.hitech.jdbc"/>
+    <jpa:repositories base-package="am.hitech.jdbc.interfaces"/>
+
+    <bean name="refTest1" class="am.hitech.jdbc.autoTest.RefTestClass">
+        <constructor-arg name="x" value="from reftest1"/>
+    </bean>
+    <bean name="refTest2" class="am.hitech.jdbc.autoTest.RefTestClass">
+        <constructor-arg name="x" value="from reftest2"/>
+    </bean>
+    <bean name="refTestClass" class="am.hitech.jdbc.autoTest.RefTestClass">
+        <constructor-arg name="x" value="from reftestclass"/>
+    </bean>
+
+
+
+    <bean name="newBean1" class="am.hitech.jdbc.test.NewBean1">
+        <constructor-arg name="newBean" ref="newBean"/>
+    </bean>
+
+    <bean name="springRef" class="am.hitech.jdbc.SoringRef">
+        <property name="s" value="barev"/>
+    </bean>
+
+    <bean name="springTest" class="am.hitech.jdbc.SpringTest">
+        <constructor-arg name="soringRef" ref="springRef" />
+    </bean>
+
+
+
+    <bean name="jdbcTemplete" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="springDataSourse"/>
+    </bean>
+
+    <bean name="userRepoSpringJdbc" class="am.hitech.jdbc.repo.UserRepoSpringJdbc">
+        <constructor-arg name="jdbcTemplate" ref="jdbcTemplete"/>
+    </bean>
+
+
+    <bean name="dataSourse" class="am.hitech.jdbc.util.DataSourse">
+        <constructor-arg name="url" value="jdbc:mysql://localhost:3306/group1"/>
+        <constructor-arg name="username" value="root"/>
+        <constructor-arg name="password" value=""/>
+    </bean>
+
+
+    <bean name="userRepoJdbc" class="am.hitech.jdbc.repo.UserRepoJdbc">
+        <property name="dataSourse" ref="dataSourse"/>
+    </bean>
+
+    <bean name="accountRepo" class="am.hitech.jdbc.repo.AccountRepo">
+        <property name="dataSourse" ref="dataSourse"/>
+    </bean>
+
+    <bean name="adressRepo" class="am.hitech.jdbc.repo.AdressRepo">
+        <property name="dataSourse" ref="dataSourse"/>
+    </bean>
+
+
+
+    <bean name="springDataSourse" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/group1"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+        <property name="suppressClose" value="true"/>
+    </bean>
+
+    <bean id="hibernateJpaVendorAdapter"
+          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="springDataSourse"/>
+        <property name="packagesToScan" value="am.hitech.jdbc.model"/>
+        <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="javax.persistence.schema-generation.database.action">none</prop>
+                <prop key="hibernate.ejb.use_class_enhancer">true</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
 
 </beans>

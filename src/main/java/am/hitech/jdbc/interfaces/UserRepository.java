@@ -1,11 +1,10 @@
 package am.hitech.jdbc.interfaces;
 
-import am.hitech.jdbc.model.NumberUser;
 import am.hitech.jdbc.model.User;
 
 import java.util.List;
 
-public interface UserRepo {
+public interface UserRepository {
     User getById(int id);
     User getByUsername(String username);
     int creatUserV2(User user);

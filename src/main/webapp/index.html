@@ -2,11 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>welcome</title>
 </head>
 <body>
 
-<h1>welcome</h1>
+<h1>Welcome</h1>
+
+<form action="/welcome" method="post">
+    <fieldset>
+        <legend>Sign in:</legend><br>
+        username:<input type="text" name="username"><br><br>
+        password:<input type="password" name="password"><br><br><br>
+        <input type="submit" name="signin" value="Sign in">
+        <button formaction="creat.html">Creat</button>
+        <button formaction="forgotPassword.html">Forgot password?</button>
+        <input type="reset">
+
+    </fieldset>
+</form>
 
 </body>
 </html>

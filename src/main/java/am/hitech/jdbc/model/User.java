@@ -1,20 +1,82 @@
 package am.hitech.jdbc.model;
 
-public class User {
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private int age;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
-    public User(int id, String firstName, String lastName, String email, int age) {
-        this.id = id;
+@Entity
+@Table(name = "user")
+public class User implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    //@NotNull //= null
+    //@NotEmpty//=null,""
+    //@NotBlank//=null,"","  "
+    //@Pattern(regexp = "[1-9 ]")//uzacFormatov
+    @Column(name = "first_name",nullable = false)
+    private String firstName;
+    @Column(name = "last_name",nullable = false)
+    private String lastName;
+    @Column(name = "email",unique = true,nullable = false)
+    private String email;
+    @Column(name = "age",nullable = false)
+    private int age;
+    @Column(name = "password",nullable = false)
+    private String password;
+    @Column(name = "password_token")
+    private String passToken;
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+
+    public User(){}
+
+    public User(String firstName, String lastName, String email, int age, String password) {
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
     }
-    public User(){}
+
+    public User(int id, String firstName, String lastName, String email, int age,String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+        this.password = password;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public String getPassToken() {
+        return passToken;
+    }
+
+    public void setPassToken(String passToken) {
+        this.passToken = passToken;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     public int getId(){
         return id;
@@ -61,6 +123,9 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                '}';
+                ", password='" + password + '\'' +
+                ", passToken='" + passToken + '\'' +
+                ", verificationCode='" + verificationCode + '\'' +
+                "}\n";
     }
 }

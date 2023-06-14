@@ -1,5 +1,7 @@
 package am.hitech.jdbc.model;
 
+import lombok.Data;
+
 public class Account {
     private int id;
     private String userName;

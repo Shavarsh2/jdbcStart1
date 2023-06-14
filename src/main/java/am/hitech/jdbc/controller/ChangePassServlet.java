@@ -14,10 +14,12 @@ import java.io.PrintWriter;
 
 public class ChangePassServlet extends HttpServlet {
     UserServise userServise = new UserServise();
-    private  String token = UpdatePassServlet.getRand();
+    //private  String token = UpdatePassServlet.getRand();
 
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter printWriter = resp.getWriter();
+
+        String token = req.getParameter("token");//es er
         String pass = req.getParameter("password");
         String pass1 = req.getParameter("password1");
         if (pass.equals(pass1)) {

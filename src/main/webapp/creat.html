@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>creatUser </title>
 </head>
 <body>
-$END$
+<h1>Hello new User</h1>
+<form action="/creatUser" method="post">
+    <fieldset>
+        <legend>Creat new User:</legend><br>
+        _firstName_:<input type="text" name="firstName"><br><br>
+        __lastName_:<input type="text" name="lastName"><br><br>
+        ____age____:<input type="number" name="age"><br><br>
+        ___email___:<input type="text" name="username"><br><br>
+        __password_:<input type="password" name="password"><br><br>
+        norPassword:<input type="password" name="password1"><br><br>
+                country:<input type="text" name="country"><br><br>
+                sity:<input type="text" name="sity"><br><br>
+                street:<input type="text" name="street"><br><br>
+                home:<input type="number" name="home"><br><br>
+               <!-- user_id:<input type="text" name="userId"><br><br>  -->
+
+        <input type="submit" name="creat" value="Creat">
+    </fieldset>
+</form>
 </body>
 </html>

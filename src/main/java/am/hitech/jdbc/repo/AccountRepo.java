@@ -7,7 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class AccountRepo {
-    Connection connection = DataSourse.getConnection();
+    DataSourse dataSourse;
+    Connection connection ;
+    public void setDataSourse(DataSourse dataSourse){
+        this.dataSourse = dataSourse;
+        connection = dataSourse.getConnection();
+    }
+
 
 
     public void transfer(int from, int to, int amount ) {

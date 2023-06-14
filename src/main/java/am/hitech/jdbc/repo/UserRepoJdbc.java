@@ -1,72 +1,30 @@
 package am.hitech.jdbc.repo;
 
+import am.hitech.jdbc.interfaces.UserRepository;
 import am.hitech.jdbc.model.NumberUser;
 import am.hitech.jdbc.model.User;
 import am.hitech.jdbc.util.DataSourse;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class UserRepo {
-    Connection connection = DataSourse.getConnection();
+public class UserRepoJdbc implements UserRepository {
 
-    public Map<Integer, User> getAllNumberMap() {
-        String query = "SELECT * FROM `user` ,`phone_numbers` WHERE user.id = phone_numbers.user_id";
-        Map<Integer, User> map = new HashMap<>();
-        try {
-            ResultSet resultSet = connection.createStatement().executeQuery(query);
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String fName = resultSet.getString("first_name");
-                String lName = resultSet.getString("last_name");
-                String email = resultSet.getString("email");
-                int age = resultSet.getInt("age");
-                int a = resultSet.getInt("number");
-                map.put(a, new User(id, fName, lName, email, age));
-            }
-            return map;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    DataSourse dataSourse;
+    Connection connection;
+    public void setDataSourse(DataSourse dataSourse){
+        this.dataSourse = dataSourse;
+        connection = dataSourse.getConnection();
     }
 
-    public List<NumberUser> getAllNumber() {
-        String query = "SELECT first_name,last_name,NUMBER FROM `user` u LEFT JOIN `phone_numbers` pn ON u.id = pn.user_id";
-        List<NumberUser> list = new ArrayList<>();
-        try {
-            ResultSet resultSet = connection.createStatement().executeQuery(query);
-            while (resultSet.next()) {
-                String fName = resultSet.getString("first_name");
-                String lName = resultSet.getString("last_name");
-                int a = resultSet.getInt("number");
-                list.add(new NumberUser(fName, lName, a));
-            }
-            return list;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    public User getByIdWeb() {
-        String query = "select * from `user` where id = 1";
-        User user = null;
-        try {
-            ResultSet resultSet = connection.createStatement().executeQuery(query);
-            user = buildUser(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return user;
-    }
 
-    public int deleteEmail(String email) {
+    public int deleteUser(User user) {//argumentum(String email)er
         String query = "delete from `user` where email = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, email);
+            statement.setString(1, user.getEmail());//email
 
             return statement.executeUpdate();
         } catch (SQLException e) {
@@ -74,18 +32,7 @@ public class UserRepo {
         }
     }
 
-    public int updateUserPass(User user) {
-        String query = "UPDATE `user` SET password = ? WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, user.getPassword());
-            statement.setInt(2, user.getId());
 
-            return statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public int updateUser(User user) {
         String query = "UPDATE `user` SET first_name = ?,last_name = ? WHERE id = ?";
@@ -100,7 +47,6 @@ public class UserRepo {
             throw new RuntimeException(e);
         }
     }
-
     public int creatUserV2(User user) {
         String query = "insert into `user` values(0,?,?,?,?,?,NULL,NULL)";
         try {
@@ -117,41 +63,6 @@ public class UserRepo {
             throw new RuntimeException(e);
         }
     }
-
-    public int creatUser(User user) {
-        String query = "insert into `user` values(" + user.getId() + ",'" + user.getFirstName() + "','" + user.getLastName() + "','" + user.getEmail() + "'," + user.getAge() + ")";
-        try {
-            Statement statement = connection.createStatement();
-            return statement.executeUpdate(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public User findEmail(String name) { //list veradarcni **
-        String query = "SELECT * FROM `user` WHERE email = '" + name + "'";
-        User user = null;
-        try {
-            ResultSet resultSet = connection.createStatement().executeQuery(query);
-            user = buildUser(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return user;
-    }
-
-    public List<User> getMaxAge18() {
-        String query = "SELECT * FROM `user` WHERE age > 18";
-        List<User> list;
-        try {
-            ResultSet resultSet = connection.createStatement().executeQuery(query);
-            list = buildListUser(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return list;
-    }
-
     public User getbyPassToken(String pass) {
         String query = "select * from `user` where password_token = '" + pass + "'";
         User user2 = null;
@@ -162,9 +73,7 @@ public class UserRepo {
             throw new RuntimeException(e);
         }
         return user2;
-
     }
-
     public User getById(int id) {
         String query = "select * from `user` where id = " + id;
         User user = null;
@@ -176,7 +85,6 @@ public class UserRepo {
         }
         return user;
     }
-
     public User getByUsername(String username) {
         String query = "select * from `user` where email ='" + username + "'";
         User user = null;
@@ -189,7 +97,6 @@ public class UserRepo {
         }
         return user;
     }
-
     private User buildUser(ResultSet resultSet) {
         User user = null;
         try {
@@ -217,11 +124,122 @@ public class UserRepo {
                 String lastName = resultSet.getString("last_name");
                 String email = resultSet.getString("email");
                 int age = resultSet.getInt("age");
-                list.add(new User(id, firstName, lastName, email, age));
+                String pass = resultSet.getString("password");
+                list.add(new User(id, firstName, lastName, email, age,pass));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
     }
+    public List<NumberUser> getAllNumber() {
+        String query = "SELECT first_name,last_name,NUMBER FROM `user` u LEFT JOIN `phone_numbers` pn ON u.id = pn.user_id";
+        List<NumberUser> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            while (resultSet.next()) {
+                String fName = resultSet.getString("first_name");
+                String lName = resultSet.getString("last_name");
+                int a = resultSet.getInt("number");
+                list.add(new NumberUser(fName, lName, a));
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public int updateUserPass(User user) {
+        String query = "UPDATE `user` SET password = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, user.getPassword());
+            statement.setInt(2, user.getId());
+
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<User> getByName(String name) {
+        return null;
+    }
+
+    @Override
+    public List<User> getByNameSearch(String name, String userName) {
+        return null;
+    }
+
+    @Override
+    public List<User> getAll() {
+        return null;
+    }
+    //public Map<Integer, User> getAllNumberMap() {
+    //    String query = "SELECT * FROM `user` ,`phone_numbers` WHERE user.id = phone_numbers.user_id";
+    //    Map<Integer, User> map = new HashMap<>();
+    //    try {
+    //        ResultSet resultSet = connection.createStatement().executeQuery(query);
+    //        while (resultSet.next()) {
+    //            int id = resultSet.getInt("id");
+    //            String fName = resultSet.getString("first_name");
+    //            String lName = resultSet.getString("last_name");
+    //            String email = resultSet.getString("email");
+    //            int age = resultSet.getInt("age");
+    //            int a = resultSet.getInt("number");
+    //            map.put(a, new User(id, fName, lName, email, age));
+    //        }
+    //        return map;
+    //    } catch (SQLException e) {
+    //        throw new RuntimeException(e);
+    //    }
+    //}
+
+
+    //public User getByIdWeb() {
+    //    String query = "select * from `user` where id = 1";
+    //    User user = null;
+    //    try {
+    //        ResultSet resultSet = connection.createStatement().executeQuery(query);
+    //        user = buildUser(resultSet);
+    //    } catch (SQLException e) {
+    //        throw new RuntimeException(e);
+    //    }
+    //    return user;
+    //}
+
+
+    //public int creatUser(User user) {
+    //    String query = "insert into `user` values(" + user.getId() + ",'" + user.getFirstName() + "','" + user.getLastName() + "','" + user.getEmail() + "'," + user.getAge() + ")";
+    //    try {
+    //        Statement statement = connection.createStatement();
+    //        return statement.executeUpdate(query);
+    //    } catch (SQLException e) {
+    //        throw new RuntimeException(e);
+    //    }
+    //}
+
+    // public User findEmail(String name) { //list veradarcni **
+    //     String query = "SELECT * FROM `user` WHERE email = '" + name + "'";
+    //     User user = null;
+    //     try {
+    //         ResultSet resultSet = connection.createStatement().executeQuery(query);
+    //         user = buildUser(resultSet);
+    //     } catch (SQLException e) {
+    //         throw new RuntimeException(e);
+    //     }
+    //     return user;
+    // }
+
+    //public List<User> getMaxAge18() {
+    //    String query = "SELECT * FROM `user` WHERE age > 18";
+    //    List<User> list;
+    //    try {
+    //        ResultSet resultSet = connection.createStatement().executeQuery(query);
+    //        list = buildListUser(resultSet);
+    //    } catch (SQLException e) {
+    //        throw new RuntimeException(e);
+    //    }
+    //    return list;
+    //}
 }

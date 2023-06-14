@@ -5,4 +5,5 @@ public class NotFoundExeption extends Exception{
     public NotFoundExeption(String text){
         super(text);
     }
+
 }

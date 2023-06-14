@@ -1,13 +1,10 @@
-package am.hitech.jdbc.servise;
+package am.hitech.jdbc.service;
 
 import am.hitech.jdbc.exeption.InternalServerEror;
 import am.hitech.jdbc.exeption.NotFoundExeption;
 import am.hitech.jdbc.model.Adress;
 import am.hitech.jdbc.repo.AdressRepo;
-import am.hitech.jdbc.util.DataSourse;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class AdressServise {

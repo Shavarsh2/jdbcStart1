@@ -6,11 +6,21 @@ import java.sql.SQLException;
 
 public class DataSourse {
     private static Connection connection;
-    private static final String url = "jdbc:mysql://localhost:3306/group1";
-    private static final String username = "root";
-    private static final String password = "";
+    private   String url = "";//final
+    private   String username = "";//final
+    private   String password = "";//final
 
-    public static Connection getConnection(){
+
+    public DataSourse(String url,String username,String password) {
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
+
+    //"jdbc:mysql://localhost:3306/group1"
+    //"root"
+    //""
+    public  Connection getConnection(){
         try {
             if(connection == null || connection.isClosed()){
                 Class clazz = Class.forName("com.mysql.cj.jdbc.Driver");
